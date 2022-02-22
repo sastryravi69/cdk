@@ -1,10 +1,10 @@
-from constructs import Construct
 from aws_cdk import (
     Stack, Duration,
-    aws_sns as sns,
-    aws_cloudwatch as cw,
-    aws_cloudwatch_actions as cwa
+    aws_cloudwatch as cw
 )
+from constructs import Construct
+
+from alarmConfigs import cwCreateAlm
 
 # Global Vars. Change this later to a config file
 EC2NameSpace = 'AWS/EC2'
@@ -12,16 +12,13 @@ EC2NameSpace = 'AWS/EC2'
 InsID = ['i-033c064ade62d83c1', 'i-05d8b2da7df3c303e', 'i-07e6b5966a210cbbb', 'i-012bdac5624a41fa8',
          'i-0806b344637b3826f']  # LQA Stack
 DefaultDur = Duration.minutes(5)
-defTh = 100
-defEvalPd = 3
-defDP2Alm = 2
-
 
 class cloudWatchMonStack(Stack):
 
     def __init__(self, scope: Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
+        alm = cwCreateAlm.cwCreateAlm()
         # Create dashboard to add details
         cdkDashBrd = cw.Dashboard(self, id='cdkTestDbID', dashboard_name='cdk_test_dashboard')
 
@@ -31,12 +28,12 @@ class cloudWatchMonStack(Stack):
 
         # CPUUtilization
         mtEC2CPUUtil = self.createMetric('CPUUtilization', EC2NameSpace, 'avg', DefaultDur)  # Metric
-        self.createAlarm('CPU Utilization', mtEC2CPUUtil)  # Create Alarm
+        alm.createAlarm('CPU Utilization', mtEC2CPUUtil)  # Create Alarm
         widEC2CPUUtil = self.createWidget('CPU Utilization', 'left', mtEC2CPUUtil)  # Widget
 
         # DiskReadOps
         mtDkRdOp = self.createMetric('DiskReadOps', EC2NameSpace, 'avg', DefaultDur)  # Metric
-        self.createAlarm('DiskReadOps', mtDkRdOp)  # Create Alarm
+        alm.createAlarm('DiskReadOps', mtDkRdOp)  # Create Alarm
         widDkRdOp = self.createWidget('Disk Read Ops', 'right', mtDkRdOp)  # Widget
 
         # DiskWriteOps
@@ -86,25 +83,3 @@ class cloudWatchMonStack(Stack):
             widget = cw.GraphWidget(title=title, right=[metric])
 
         return widget
-
-    # Method for creating Alarm
-    def createAlarm(self, alm_name, mt_name) -> None:
-        alarm = cw.Alarm(self,
-                         metric=mt_name,
-                         id=alm_name,
-                         comparison_operator=cw.ComparisonOperator.LESS_THAN_OR_EQUAL_TO_THRESHOLD,
-                         threshold=defTh,
-                         evaluation_periods=defEvalPd,
-                         datapoints_to_alarm=defDP2Alm
-                         )
-        self.createTopic(alarm)
-
-    # Method for adding topic
-    def createTopic(self, alarm):
-        topic = sns.Topic.from_topic_arn(self, id='ExistingSNSTopic', topic_arn="arn:aws:sns:us-east-1:891440700613:myTestTopic")
-
-        alarm.add_alarm_action(
-            cwa.SnsAction(
-                topic=topic
-            )
-        )
