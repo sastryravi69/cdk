@@ -1,0 +1,19 @@
+{
+  "version": "16.0.0",
+  "files": {
+    "05d2676c3a788b7ccde3111b45e7b321da85cfadeb8737065a13e210fbd29882": {
+      "source": {
+        "path": "cwDashbRDS.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "05d2676c3a788b7ccde3111b45e7b321da85cfadeb8737065a13e210fbd29882.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

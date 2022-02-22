@@ -1,0 +1,19 @@
+{
+  "version": "16.0.0",
+  "files": {
+    "92a92bba537f62510508a64e71fc96c18e3720fed990c87b0c1327666fe9e3fa": {
+      "source": {
+        "path": "cloudWatchMonStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "92a92bba537f62510508a64e71fc96c18e3720fed990c87b0c1327666fe9e3fa.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
