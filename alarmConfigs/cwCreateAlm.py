@@ -8,6 +8,7 @@ from aws_cdk import (
 defTh = 100
 defEvalPd = 3
 defDP2Alm = 2
+topicArn = "arn:aws:sns:us-east-1:891440700613:myTestTopic"
 
 
 class cwCreateAlm(Stack):
@@ -22,13 +23,11 @@ class cwCreateAlm(Stack):
                          evaluation_periods=defEvalPd,
                          datapoints_to_alarm=defDP2Alm
                          )
-        self.createTopic(alarm)
 
-    # Method for adding topic
-    def createTopic(self, id: str, alarm):
-        alarm.add_alarm_action(
-            cwa.SnsAction(
-                topic=sns.Topic.from_topic_arn(self, id,
-                                               topic_arn="arn:aws:sns:us-east-1:891440700613:myTestTopic")
-            )
-        )
+        # topic = sns.Topic(self, id="MyTestTopic"+alm_name)
+        #
+        # alarm.add_alarm_action(
+        #     cwa.SnsAction(
+        #         topic=topic.from_topic_arn(self, id, topic_arn=topicArn)
+        #     )
+        # )
