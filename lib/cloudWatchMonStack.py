@@ -3,8 +3,7 @@ from aws_cdk import (
     aws_cloudwatch as cw
 )
 from constructs import Construct
-
-from alarmConfigs import cwCreateAlm
+from alarmConfigs.cwCreateAlm import cwCreateAlm
 
 # Global Vars. Change this later to a config file
 EC2NameSpace = 'AWS/EC2'
@@ -13,12 +12,13 @@ InsID = ['i-033c064ade62d83c1', 'i-05d8b2da7df3c303e', 'i-07e6b5966a210cbbb', 'i
          'i-0806b344637b3826f']  # LQA Stack
 DefaultDur = Duration.minutes(5)
 
+
 class cloudWatchMonStack(Stack):
 
     def __init__(self, scope: Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        alm = cwCreateAlm.cwCreateAlm()
+        alm = cwCreateAlm()
         # Create dashboard to add details
         cdkDashBrd = cw.Dashboard(self, id='cdkTestDbID', dashboard_name='cdk_test_dashboard')
 
