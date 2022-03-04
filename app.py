@@ -8,6 +8,7 @@ from lib.cloudWatchMonStack import cloudWatchMonStack
 from lib.cwDashBRDS import cwDashbRDS
 from lib.cwdashboardLB import cwdashboardLB
 from lib.lambdaNS3 import cdkLambdaHandler
+from lib.cwCertificateMon import cwCert
 
 
 app = cdk.App()
@@ -15,4 +16,5 @@ cloudWatchMonStack(app, "cloudWatchMonStack")
 cwDashbRDS(app, "cwDashbRDS")
 cwdashboardLB(app, "cwdashboardLB")
 cdkLambdaHandler(app, "cdkLambdaHandler")
+cwCert(app, "cwCert")
 app.synth()

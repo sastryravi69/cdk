@@ -20,9 +20,8 @@ class cloudWatchMonStack(Stack):
 
         alm = cwCreateAlm()
         # Create dashboard to add details
-        cdkDashBrd = cw.Dashboard(self, id='cdkTestDbID', dashboard_name='cdk_test_dashboard')
-
-        widTxt = cw.TextWidget(markdown='Title widget', width=24, height=2)
+        cdkDashBrd = cw.Dashboard(self, id='cdkTestDbID', dashboard_name='cdk_test_dashboard',
+                                  period_override=cw.PeriodOverride.INHERIT)
 
         # Create Metric & Widget for EC2 monitoring
 
@@ -61,18 +60,20 @@ class cloudWatchMonStack(Stack):
         widStCkFail = self.createWidget('Status Check Failed', 'left', mtStCkFail)  # Widget
 
         # Add Widgets to dashboard
-        cdkDashBrd.add_widgets(widTxt, widEC2CPUUtil, widDkRdOp, widDkWtOp, widStCkF_Ins, widStCkF_Sys,
+        cdkDashBrd.add_widgets(widEC2CPUUtil, widDkRdOp, widDkWtOp, widStCkF_Ins, widStCkF_Sys,
                                widNWPktIn, widNWPktOut, widStCkFail)
 
     # Method for creating Metric
     def createMetric(self, mt_name, namespace, stats, duration):
         met = cw.Metric(
+            label=InsID[0]+mt_name,
             metric_name=mt_name,
             namespace=namespace,
             statistic=stats,
             period=duration,
             dimensions_map=dict(InstanceId=InsID[0])
         )
+
         return met
 
     # Method for creating widget
