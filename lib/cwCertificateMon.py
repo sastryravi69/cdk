@@ -15,8 +15,10 @@ class cwCert(Stack):
         super().__init__(scope, id, **kwargs)
 
         # Create dashboard to add details
-        cdkDashBrd = cw.Dashboard(self, id='cdkCertID', dashboard_name='cdk_cert_dashboard', start='-P1M',
+        cdkDashBrd = cw.Dashboard(self, id='cdkCertID', dashboard_name='cdk_cert_dashboard', start='-P1W',
                                   period_override=cw.PeriodOverride.INHERIT)
+
+        # crtArn = self.node.try_get_context('certArn')
 
         cdkDashBrd.add_widgets(cw.GraphWidget(title='Certificate Expiry', left=[cw.Metric(
             label='DaysToExpire',
