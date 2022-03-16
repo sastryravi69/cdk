@@ -1,0 +1,16 @@
+{
+  "availability-zones:account=891440700613:region=eu-west-1": [
+    "eu-west-1a",
+    "eu-west-1b",
+    "eu-west-1c"
+  ],
+  "ami:account=891440700613:filters.image-type.0=machine:filters.name.0=NGINX_LQA:filters.state.0=available:owners.0=891440700613:region=eu-west-1": "ami-052840d6bdb395a81",
+  "availability-zones:account=891440700613:region=us-east-1": [
+    "us-east-1a",
+    "us-east-1b",
+    "us-east-1c",
+    "us-east-1d",
+    "us-east-1e",
+    "us-east-1f"
+  ]
+}

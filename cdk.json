@@ -1,0 +1,45 @@
+{
+  "app": "python app.py",
+  "context": {
+    "appName" : "ULSalesForceCoreTechnology",
+    "DEV_US" : {
+      "account_id" : "891440700613",
+      "vpc_name" : "USEast-EKS-VPC",
+      "region" : "us-east-1",
+      "vpc_cidr" : "172.168.0.0/16",
+      "public_cidr" : "192.168.1.0/24",
+      "private_cidr" : "192.168.2.0/24",
+      "ec2_type" : "t2.micro",
+      "linux_ami_name" : "NGINX_LQA",
+      "key_name" : "Devops",
+      "eipAllocId" : "eipalloc-08f72fd81d3ddcccc",
+      "elasticIP" : "3.211.60.181",
+      "eipNetworkId" : "eni-04ecdc1e76ac7ba99",
+      "eipInstanceId" : "",
+      "eipPrivateIP" : "192.167.58.157"
+    },
+    "DEV_EU" : {
+      "account_id" : "891440700613",
+      "vpc_name" : "EUWest-EKS-VPC",
+      "region" : "eu-west-1",
+      "az1a"    : "eu-west-1a",
+      "az1b"    : "eu-west-1b",
+      "az1c"    : "eu-west-1c",
+      "vpc_cidr" : "192.168.0.0/16",
+      "public_cidr" : "192.168.32.0",
+      "private_cidr" : "192.168.128.0",
+      "ec2_type" : "t2.micro",
+      "linux_ami_name" : "NGINX_LQA",
+      "s3_arn" : "arn:aws:s3:::devtestpoc",
+      "key_name" : "Devops",
+      "eipAllocId" : "eipalloc-0eb7a146bd2174c7d",
+      "elasticIP" : "44.193.58.190",
+      "eipNetworkId" : "eni-04ecdc1e76ac7ba99",
+      "eipInstanceId" : "",
+      "eipPrivateIP" : "192.167.58.157"
+    },
+    "PROD" : {
+      "region" : "eu-west-1"
+    }
+  }
+}

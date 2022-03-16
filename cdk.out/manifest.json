@@ -1,0 +1,118 @@
+{
+  "version": "16.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "vpcStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "vpcStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "vpcStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://891440700613/us-east-1",
+      "properties": {
+        "templateFile": "vpcStack.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::891440700613:role/cdk-hnb659fds-deploy-role-891440700613-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::891440700613:role/cdk-hnb659fds-cfn-exec-role-891440700613-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-891440700613-us-east-1/d9a55f5a9c9c3e7a77d70a2bf22071e027c675df7ac9bf3c5783a9ea56d9bb2d.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "vpcStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::891440700613:role/cdk-hnb659fds-lookup-role-891440700613-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "vpcStack.assets"
+      ],
+      "metadata": {
+        "/vpcStack/EKSVpc": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EKSVpc"
+          }
+        ],
+        "/vpcStack/public-subnet-eu-west-1a": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "publicsubneteuwest1a"
+          }
+        ],
+        "/vpcStack/public-subnet-eu-west-1b": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "publicsubneteuwest1b"
+          }
+        ],
+        "/vpcStack/public-subnet-eu-west-1c": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "publicsubneteuwest1c"
+          }
+        ],
+        "/vpcStack/private-subnet-eu-west-1a": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "privatesubneteuwest1a"
+          }
+        ],
+        "/vpcStack/private-subnet-eu-west-1b": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "privatesubneteuwest1b"
+          }
+        ],
+        "/vpcStack/private-subnet-eu-west-1c": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "privatesubneteuwest1c"
+          }
+        ],
+        "/vpcStack/EKSVpcFlowLog": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EKSVpcFlowLog"
+          }
+        ],
+        "/vpcStack/Output": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Output"
+          }
+        ],
+        "/vpcStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/vpcStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/vpcStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "vpcStack"
+    }
+  }
+}

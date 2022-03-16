@@ -1,0 +1,167 @@
+{
+  "Resources": {
+    "EKSVpc": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "192.168.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true
+      },
+      "Metadata": {
+        "aws:cdk:path": "vpcStack/EKSVpc"
+      }
+    },
+    "publicsubneteuwest1a": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.168.1.0/24",
+        "VpcId": {
+          "Ref": "EKSVpc"
+        },
+        "AvailabilityZone": "us-east-1a",
+        "MapPublicIpOnLaunch": true
+      },
+      "Metadata": {
+        "aws:cdk:path": "vpcStack/public-subnet-eu-west-1a"
+      }
+    },
+    "publicsubneteuwest1b": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.168.2.0/24",
+        "VpcId": {
+          "Ref": "EKSVpc"
+        },
+        "AvailabilityZone": "us-east-1b",
+        "MapPublicIpOnLaunch": true
+      },
+      "Metadata": {
+        "aws:cdk:path": "vpcStack/public-subnet-eu-west-1b"
+      }
+    },
+    "publicsubneteuwest1c": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.168.3.0/24",
+        "VpcId": {
+          "Ref": "EKSVpc"
+        },
+        "AvailabilityZone": "us-east-1b",
+        "MapPublicIpOnLaunch": true
+      },
+      "Metadata": {
+        "aws:cdk:path": "vpcStack/public-subnet-eu-west-1c"
+      }
+    },
+    "privatesubneteuwest1a": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.168.4.0/24",
+        "VpcId": {
+          "Ref": "EKSVpc"
+        },
+        "AvailabilityZone": "us-east-1a",
+        "MapPublicIpOnLaunch": false
+      },
+      "Metadata": {
+        "aws:cdk:path": "vpcStack/private-subnet-eu-west-1a"
+      }
+    },
+    "privatesubneteuwest1b": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.168.5.0/24",
+        "VpcId": {
+          "Ref": "EKSVpc"
+        },
+        "AvailabilityZone": "us-east-1b",
+        "MapPublicIpOnLaunch": false
+      },
+      "Metadata": {
+        "aws:cdk:path": "vpcStack/private-subnet-eu-west-1b"
+      }
+    },
+    "privatesubneteuwest1c": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.168.6.0/24",
+        "VpcId": {
+          "Ref": "EKSVpc"
+        },
+        "AvailabilityZone": "us-east-1c",
+        "MapPublicIpOnLaunch": false
+      },
+      "Metadata": {
+        "aws:cdk:path": "vpcStack/private-subnet-eu-west-1c"
+      }
+    },
+    "EKSVpcFlowLog": {
+      "Type": "AWS::EC2::FlowLog",
+      "Properties": {
+        "ResourceId": {
+          "Ref": "EKSVpc"
+        },
+        "ResourceType": "VPC",
+        "TrafficType": "ALL",
+        "LogDestination": "arn:aws:s3:::devtestpoc",
+        "LogDestinationType": "s3"
+      },
+      "Metadata": {
+        "aws:cdk:path": "vpcStack/EKSVpcFlowLog"
+      }
+    },
+    "CDKMetadata": {
+      "Type": "AWS::CDK::Metadata",
+      "Properties": {
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/zPSMzTVM1BMLC/WTU7J1s3JTNKrDi5JTM7WAQrFpyYb6VU7p+WFBTjrAKng0qS81BIQyy0nv9wnP70WxPYvLSkoBYsGpRbnlxYlp9bqBFSWZOTn6RvrGRroGSlmFWdm6haV5pVk5qbqBUFoAHPaLg15AAAA"
+      },
+      "Metadata": {
+        "aws:cdk:path": "vpcStack/CDKMetadata/Default"
+      }
+    }
+  },
+  "Outputs": {
+    "Output": {
+      "Value": {
+        "Ref": "EKSVpc"
+      },
+      "Export": {
+        "Name": "EUWest-EKS-VPC"
+      }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
+    }
+  }
+}

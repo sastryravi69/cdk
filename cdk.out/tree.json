@@ -1,0 +1,207 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.0.75"
+        }
+      },
+      "vpcStack": {
+        "id": "vpcStack",
+        "path": "vpcStack",
+        "children": {
+          "EKSVpc": {
+            "id": "EKSVpc",
+            "path": "vpcStack/EKSVpc",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::EC2::VPC",
+              "aws:cdk:cloudformation:props": {
+                "cidrBlock": "192.168.0.0/16",
+                "enableDnsHostnames": true,
+                "enableDnsSupport": true
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.CfnVPC",
+              "version": "2.15.0"
+            }
+          },
+          "public-subnet-eu-west-1a": {
+            "id": "public-subnet-eu-west-1a",
+            "path": "vpcStack/public-subnet-eu-west-1a",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+              "aws:cdk:cloudformation:props": {
+                "cidrBlock": "172.168.1.0/24",
+                "vpcId": {
+                  "Ref": "EKSVpc"
+                },
+                "availabilityZone": "us-east-1a",
+                "mapPublicIpOnLaunch": true
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+              "version": "2.15.0"
+            }
+          },
+          "public-subnet-eu-west-1b": {
+            "id": "public-subnet-eu-west-1b",
+            "path": "vpcStack/public-subnet-eu-west-1b",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+              "aws:cdk:cloudformation:props": {
+                "cidrBlock": "172.168.2.0/24",
+                "vpcId": {
+                  "Ref": "EKSVpc"
+                },
+                "availabilityZone": "us-east-1b",
+                "mapPublicIpOnLaunch": true
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+              "version": "2.15.0"
+            }
+          },
+          "public-subnet-eu-west-1c": {
+            "id": "public-subnet-eu-west-1c",
+            "path": "vpcStack/public-subnet-eu-west-1c",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+              "aws:cdk:cloudformation:props": {
+                "cidrBlock": "172.168.3.0/24",
+                "vpcId": {
+                  "Ref": "EKSVpc"
+                },
+                "availabilityZone": "us-east-1b",
+                "mapPublicIpOnLaunch": true
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+              "version": "2.15.0"
+            }
+          },
+          "private-subnet-eu-west-1a": {
+            "id": "private-subnet-eu-west-1a",
+            "path": "vpcStack/private-subnet-eu-west-1a",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+              "aws:cdk:cloudformation:props": {
+                "cidrBlock": "172.168.4.0/24",
+                "vpcId": {
+                  "Ref": "EKSVpc"
+                },
+                "availabilityZone": "us-east-1a",
+                "mapPublicIpOnLaunch": false
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+              "version": "2.15.0"
+            }
+          },
+          "private-subnet-eu-west-1b": {
+            "id": "private-subnet-eu-west-1b",
+            "path": "vpcStack/private-subnet-eu-west-1b",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+              "aws:cdk:cloudformation:props": {
+                "cidrBlock": "172.168.5.0/24",
+                "vpcId": {
+                  "Ref": "EKSVpc"
+                },
+                "availabilityZone": "us-east-1b",
+                "mapPublicIpOnLaunch": false
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+              "version": "2.15.0"
+            }
+          },
+          "private-subnet-eu-west-1c": {
+            "id": "private-subnet-eu-west-1c",
+            "path": "vpcStack/private-subnet-eu-west-1c",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+              "aws:cdk:cloudformation:props": {
+                "cidrBlock": "172.168.6.0/24",
+                "vpcId": {
+                  "Ref": "EKSVpc"
+                },
+                "availabilityZone": "us-east-1c",
+                "mapPublicIpOnLaunch": false
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+              "version": "2.15.0"
+            }
+          },
+          "EKSVpcFlowLog": {
+            "id": "EKSVpcFlowLog",
+            "path": "vpcStack/EKSVpcFlowLog",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::EC2::FlowLog",
+              "aws:cdk:cloudformation:props": {
+                "resourceId": {
+                  "Ref": "EKSVpc"
+                },
+                "resourceType": "VPC",
+                "trafficType": "ALL",
+                "logDestination": "arn:aws:s3:::devtestpoc",
+                "logDestinationType": "s3"
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.CfnFlowLog",
+              "version": "2.15.0"
+            }
+          },
+          "Output": {
+            "id": "Output",
+            "path": "vpcStack/Output",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.15.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "vpcStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "vpcStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.15.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.0.75"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.15.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.15.0"
+    }
+  }
+}

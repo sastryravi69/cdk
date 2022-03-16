@@ -1,0 +1,20 @@
+{
+  "version": "16.0.0",
+  "files": {
+    "85aee3bf0106965bf1a9ba47bb06f5d99b4a3e26f282c34884aa4d200fa4d922": {
+      "source": {
+        "path": "AutoScalingFargateService.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "891440700613-eu-west-1": {
+          "bucketName": "cdk-hnb659fds-assets-891440700613-eu-west-1",
+          "objectKey": "85aee3bf0106965bf1a9ba47bb06f5d99b4a3e26f282c34884aa4d200fa4d922.json",
+          "region": "eu-west-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::891440700613:role/cdk-hnb659fds-file-publishing-role-891440700613-eu-west-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

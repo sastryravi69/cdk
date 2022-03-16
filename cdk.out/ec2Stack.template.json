@@ -1,0 +1,337 @@
+{
+  "Resources": {
+    "myALB18A49813": {
+      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+      "Properties": {
+        "LoadBalancerAttributes": [
+          {
+            "Key": "deletion_protection.enabled",
+            "Value": "false"
+          }
+        ],
+        "Name": "myALB",
+        "Scheme": "internet-facing",
+        "SecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "myALBSecurityGroupF245F258",
+              "GroupId"
+            ]
+          }
+        ],
+        "Subnets": [
+          {
+            "Fn::ImportValue": "vpcStack:ExportsOutputRefEKSVpcPublicSubnet1Subnet6F739FCA65B08EC3"
+          },
+          {
+            "Fn::ImportValue": "vpcStack:ExportsOutputRefEKSVpcPublicSubnet2Subnet22F974C4B375E8ED"
+          },
+          {
+            "Fn::ImportValue": "vpcStack:ExportsOutputRefEKSVpcPublicSubnet3Subnet56B42EFD9EC87356"
+          }
+        ],
+        "Type": "application"
+      },
+      "Metadata": {
+        "aws:cdk:path": "ec2Stack/myALB/Resource"
+      }
+    },
+    "myALBSecurityGroupF245F258": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Automatically created Security Group for ELB ec2StackmyALBFF8111E2",
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Internet access ALB 80",
+            "FromPort": 80,
+            "IpProtocol": "tcp",
+            "ToPort": 80
+          }
+        ],
+        "VpcId": {
+          "Fn::ImportValue": "vpcStack:ExportsOutputRefEKSVpcBAB3E5CC648B29C1"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "ec2Stack/myALB/SecurityGroup/Resource"
+      }
+    },
+    "myALBSecurityGrouptoec2StackmyASGInstanceSecurityGroup5136B1F1808F84B1B1": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Fn::GetAtt": [
+            "myALBSecurityGroupF245F258",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "Description": "ALB access 80 port of EC2 in Autoscaling Group",
+        "DestinationSecurityGroupId": {
+          "Fn::GetAtt": [
+            "myASGInstanceSecurityGroup77B88BA5",
+            "GroupId"
+          ]
+        },
+        "FromPort": 80,
+        "ToPort": 80
+      },
+      "Metadata": {
+        "aws:cdk:path": "ec2Stack/myALB/SecurityGroup/to ec2StackmyASGInstanceSecurityGroup5136B1F1:80"
+      }
+    },
+    "myALBmy80B990410C": {
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+      "Properties": {
+        "DefaultActions": [
+          {
+            "TargetGroupArn": {
+              "Ref": "myALBmy80addTargetGroupGroup1569733D"
+            },
+            "Type": "forward"
+          }
+        ],
+        "LoadBalancerArn": {
+          "Ref": "myALB18A49813"
+        },
+        "Port": 80,
+        "Protocol": "HTTP"
+      },
+      "Metadata": {
+        "aws:cdk:path": "ec2Stack/myALB/my80/Resource"
+      }
+    },
+    "myALBmy80addTargetGroupGroup1569733D": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "Properties": {
+        "Port": 80,
+        "Protocol": "HTTP",
+        "TargetGroupAttributes": [
+          {
+            "Key": "stickiness.enabled",
+            "Value": "false"
+          }
+        ],
+        "TargetType": "instance",
+        "VpcId": {
+          "Fn::ImportValue": "vpcStack:ExportsOutputRefEKSVpcBAB3E5CC648B29C1"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "ec2Stack/myALB/my80/addTargetGroupGroup/Resource"
+      }
+    },
+    "myASGInstanceSecurityGroup77B88BA5": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "ec2Stack/myASG/InstanceSecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "ec2Stack/myASG"
+          }
+        ],
+        "VpcId": {
+          "Fn::ImportValue": "vpcStack:ExportsOutputRefEKSVpcBAB3E5CC648B29C1"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "ec2Stack/myASG/InstanceSecurityGroup/Resource"
+      }
+    },
+    "myASGInstanceSecurityGroupfromec2StackmyALBSecurityGroupA8550280809E0995F3": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "Description": "ALB access 80 port of EC2 in Autoscaling Group",
+        "FromPort": 80,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "myASGInstanceSecurityGroup77B88BA5",
+            "GroupId"
+          ]
+        },
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "myALBSecurityGroupF245F258",
+            "GroupId"
+          ]
+        },
+        "ToPort": 80
+      },
+      "Metadata": {
+        "aws:cdk:path": "ec2Stack/myASG/InstanceSecurityGroup/from ec2StackmyALBSecurityGroupA8550280:80"
+      }
+    },
+    "myASGInstanceRole5AF7F92F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ec2.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "ec2Stack/myASG"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "ec2Stack/myASG/InstanceRole/Resource"
+      }
+    },
+    "myASGInstanceProfile053766AB": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Roles": [
+          {
+            "Ref": "myASGInstanceRole5AF7F92F"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "ec2Stack/myASG/InstanceProfile"
+      }
+    },
+    "myASGLaunchConfigA0CD8C73": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "Properties": {
+        "ImageId": "ami-052840d6bdb395a81",
+        "InstanceType": "EUWest-EKS-VPC",
+        "IamInstanceProfile": {
+          "Ref": "myASGInstanceProfile053766AB"
+        },
+        "KeyName": "Devops",
+        "SecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "myASGInstanceSecurityGroup77B88BA5",
+              "GroupId"
+            ]
+          }
+        ],
+        "UserData": {
+          "Fn::Base64": "#!/bin/bash"
+        }
+      },
+      "DependsOn": [
+        "myASGInstanceRole5AF7F92F"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "ec2Stack/myASG/LaunchConfig"
+      }
+    },
+    "myASG6C9F5AC0": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {
+        "MaxSize": "2",
+        "MinSize": "2",
+        "DesiredCapacity": "2",
+        "LaunchConfigurationName": {
+          "Ref": "myASGLaunchConfigA0CD8C73"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "PropagateAtLaunch": true,
+            "Value": "ec2Stack/myASG"
+          }
+        ],
+        "TargetGroupARNs": [
+          {
+            "Ref": "myALBmy80addTargetGroupGroup1569733D"
+          }
+        ],
+        "VPCZoneIdentifier": [
+          {
+            "Fn::ImportValue": "vpcStack:ExportsOutputRefEKSVpcPrivateSubnet1SubnetD09A772618684199"
+          },
+          {
+            "Fn::ImportValue": "vpcStack:ExportsOutputRefEKSVpcPrivateSubnet2Subnet75FE259EDCEF0C42"
+          },
+          {
+            "Fn::ImportValue": "vpcStack:ExportsOutputRefEKSVpcPrivateSubnet3Subnet5CF05D30063B3669"
+          }
+        ]
+      },
+      "UpdatePolicy": {
+        "AutoScalingScheduledAction": {
+          "IgnoreUnmodifiedGroupSizeProperties": true
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "ec2Stack/myASG/ASG"
+      }
+    },
+    "CDKMetadata": {
+      "Type": "AWS::CDK::Metadata",
+      "Properties": {
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/32Q0WoCMRBFv8X3bKpb/IBWShGEitv3MsbZdTROlmRikSX/3uxaZdtCn5J77iHJpNSzuZ5O4DMUZncsLG11VwmYo8roo0MLQchYB7stWGBD3JxL3T21rSUDQo5XuXseOvRqUf/MY4+CIH87t/2ofwffoLx6F9teGcWk0OQ7KzTRk1zuyv/gpfEYwh+85IEnBVFcMGDzRHmeHKpruJ+2gshmv3BcUxP98MYe/1aTIjjpbuMs9vVtXXKQ/g/W3tVkMaUevkVpowwaBhe9waTWF9k7fnjUs6kuJ4dAVPjIQifUm+v6BcGBHh2kAQAA"
+      },
+      "Metadata": {
+        "aws:cdk:path": "ec2Stack/CDKMetadata/Default"
+      }
+    }
+  },
+  "Outputs": {
+    "Output": {
+      "Value": {
+        "Fn::GetAtt": [
+          "myALB18A49813",
+          "DNSName"
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
+    }
+  }
+}
